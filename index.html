@@ -1,0 +1,300 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>El LED azul: de imposible a realidad</title>
+  <style>
+    :root {
+      --bg: #0b1220;
+      --card: #131d33;
+      --text: #e9f0ff;
+      --muted: #9cb0d9;
+      --accent: #4da3ff;
+      --accent-2: #67f5ff;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+      background: radial-gradient(circle at top, #17284a, var(--bg) 40%);
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    .container {
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 1.25rem;
+    }
+
+    .hero {
+      text-align: center;
+      margin: 2rem 0 1rem;
+    }
+
+    h1 {
+      font-size: clamp(1.8rem, 4vw, 3rem);
+      margin-bottom: .4rem;
+    }
+
+    h2 {
+      margin-top: 0;
+      color: #d8e8ff;
+    }
+
+    .muted { color: var(--muted); }
+
+    .grid {
+      display: grid;
+      gap: 1rem;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      margin: 1.5rem 0;
+    }
+
+    .card {
+      background: linear-gradient(165deg, #182746, var(--card));
+      border: 1px solid #2b3a5f;
+      border-radius: 16px;
+      padding: 1rem 1.2rem;
+      box-shadow: 0 8px 28px rgba(0,0,0,.3);
+    }
+
+    .timeline li { margin: .5rem 0; }
+
+    .demo-wrap {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1rem;
+    }
+
+    .lamp {
+      width: 180px;
+      height: 180px;
+      border-radius: 50%;
+      margin: .3rem auto 1rem;
+      background: rgb(0, 130, 255);
+      box-shadow: 0 0 16px rgba(50,130,255,.7), 0 0 50px rgba(40,120,255,.45);
+      border: 2px solid rgba(255,255,255,.2);
+      transition: background .2s ease, box-shadow .2s ease;
+    }
+
+    label {
+      display: block;
+      margin-top: .8rem;
+      font-weight: 600;
+    }
+
+    input[type="range"] {
+      width: 100%;
+      accent-color: var(--accent);
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(120px, 1fr));
+      gap: .6rem;
+      margin-top: .8rem;
+    }
+
+    .chip {
+      background: rgba(8,14,27,.65);
+      border: 1px solid #304870;
+      border-radius: 10px;
+      padding: .55rem;
+      font-size: .95rem;
+    }
+
+    .chip strong { display:block; color:#cce3ff; }
+
+    .btn {
+      width: 100%;
+      margin-top: .9rem;
+      border: 1px solid #4e84d4;
+      background: linear-gradient(90deg, #265ec8, #238bb4);
+      color: white;
+      border-radius: 10px;
+      padding: .65rem;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    footer {
+      margin: 2rem 0 1rem;
+      color: var(--muted);
+      text-align: center;
+      font-size: .92rem;
+    }
+
+    code {
+      background: #15213c;
+      border: 1px solid #2e4672;
+      padding: .08rem .35rem;
+      border-radius: 5px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header class="hero">
+      <h1>El LED azul: cuando lo “imposible” se volvió luz</h1>
+      <p class="muted">Una web interactiva para entender por qué costó tanto crearlo y cómo funciona un LED de color (RGB).</p>
+    </header>
+
+    <section class="grid">
+      <article class="card">
+        <h2>¿Por qué casi fue imposible?</h2>
+        <p>
+          Durante décadas existieron LEDs rojos y verdes, pero faltaba el azul intenso. El problema estaba en el material semiconductor:
+          para emitir azul se necesitaba una banda prohibida más grande, y fabricar cristales de alta calidad era extremadamente difícil.
+        </p>
+        <ul class="timeline">
+          <li><strong>1960-1980:</strong> Se logran LEDs rojo/verde comerciales.</li>
+          <li><strong>Reto clave:</strong> Obtener nitruro de galio (GaN) útil y controlar el dopaje tipo p.</li>
+          <li><strong>Años 90:</strong> Avances de Akasaki, Amano y Nakamura hacen viable el LED azul eficiente.</li>
+          <li><strong>Resultado:</strong> Nacen LEDs blancos (azul + fósforo) y la iluminación moderna de bajo consumo.</li>
+        </ul>
+        <p class="muted">Este hito fue tan importante que sus investigadores recibieron el Nobel de Física 2014.</p>
+      </article>
+
+      <article class="card demo-wrap">
+        <div>
+          <h2>Simulador interactivo: LED de color (RGB)</h2>
+          <p class="muted">Ajusta corriente y color para ver cómo cambia el brillo y el tono de un LED.</p>
+          <div id="lamp" class="lamp" aria-label="Visualización de LED"></div>
+
+          <label for="r">Canal rojo: <span id="rVal">0</span></label>
+          <input id="r" type="range" min="0" max="255" value="0" />
+
+          <label for="g">Canal verde: <span id="gVal">130</span></label>
+          <input id="g" type="range" min="0" max="255" value="130" />
+
+          <label for="b">Canal azul: <span id="bVal">255</span></label>
+          <input id="b" type="range" min="0" max="255" value="255" />
+
+          <label for="i">Corriente (mA): <span id="iVal">20</span></label>
+          <input id="i" type="range" min="1" max="30" value="20" />
+
+          <button class="btn" id="autoBtn">Activar animación arcoíris</button>
+
+          <div class="stats">
+            <div class="chip"><strong>Color actual</strong><span id="rgbText">rgb(0,130,255)</span></div>
+            <div class="chip"><strong>Brillo estimado</strong><span id="lum">67%</span></div>
+            <div class="chip"><strong>Voltaje típico LED azul</strong><span>≈ 3.0 - 3.4 V</span></div>
+            <div class="chip"><strong>Potencia aprox.</strong><span id="power">0.064 W</span></div>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <section class="card">
+      <h2>¿Cómo funciona un LED de color?</h2>
+      <p>
+        Un LED emite luz cuando electrones y huecos se recombinan en una unión <code>p-n</code>. La energía liberada sale en forma de fotones.
+        En un LED RGB hay tres emisores (rojo, verde y azul), y al mezclar sus intensidades se generan muchos colores.
+      </p>
+      <p>
+        La corriente controla el brillo: más corriente suele significar más luz (hasta límites seguros). Por eso en la práctica siempre se usa
+        una resistencia o un controlador de corriente para proteger el diodo.
+      </p>
+    </section>
+
+    <footer>
+      Hecho para aprender ciencia e ingeniería con una experiencia visual interactiva.
+    </footer>
+  </div>
+
+  <script>
+    const lamp = document.getElementById('lamp');
+    const r = document.getElementById('r');
+    const g = document.getElementById('g');
+    const b = document.getElementById('b');
+    const i = document.getElementById('i');
+
+    const rVal = document.getElementById('rVal');
+    const gVal = document.getElementById('gVal');
+    const bVal = document.getElementById('bVal');
+    const iVal = document.getElementById('iVal');
+    const rgbText = document.getElementById('rgbText');
+    const lum = document.getElementById('lum');
+    const power = document.getElementById('power');
+    const autoBtn = document.getElementById('autoBtn');
+
+    let rainbow = null;
+
+    function updateLamp() {
+      const rv = Number(r.value);
+      const gv = Number(g.value);
+      const bv = Number(b.value);
+      const current = Number(i.value);
+
+      const intensity = Math.min(1, current / 20);
+      const fr = Math.round(rv * intensity);
+      const fg = Math.round(gv * intensity);
+      const fb = Math.round(bv * intensity);
+
+      const brightness = Math.round((0.2126 * fr + 0.7152 * fg + 0.0722 * fb) / 255 * 100);
+      const voltage = 3.2;
+      const watts = voltage * (current / 1000);
+
+      lamp.style.background = `rgb(${fr}, ${fg}, ${fb})`;
+      lamp.style.boxShadow = `0 0 ${12 + current}px rgba(${fr}, ${fg}, ${fb}, .75), 0 0 ${35 + current * 2}px rgba(${fr}, ${fg}, ${fb}, .45)`;
+
+      rVal.textContent = rv;
+      gVal.textContent = gv;
+      bVal.textContent = bv;
+      iVal.textContent = current;
+      rgbText.textContent = `rgb(${fr}, ${fg}, ${fb})`;
+      lum.textContent = `${brightness}%`;
+      power.textContent = `${watts.toFixed(3)} W`;
+    }
+
+    [r, g, b, i].forEach(input => input.addEventListener('input', updateLamp));
+
+    autoBtn.addEventListener('click', () => {
+      if (rainbow) {
+        clearInterval(rainbow);
+        rainbow = null;
+        autoBtn.textContent = 'Activar animación arcoíris';
+        return;
+      }
+
+      let hue = 0;
+      rainbow = setInterval(() => {
+        hue = (hue + 3) % 360;
+        const c = hslToRgb(hue / 360, 1, 0.5);
+        r.value = c[0];
+        g.value = c[1];
+        b.value = c[2];
+        updateLamp();
+      }, 60);
+      autoBtn.textContent = 'Detener animación arcoíris';
+    });
+
+    function hslToRgb(h, s, l) {
+      if (s === 0) {
+        const v = Math.round(l * 255);
+        return [v, v, v];
+      }
+      const hue2rgb = (p, q, t) => {
+        if (t < 0) t += 1;
+        if (t > 1) t -= 1;
+        if (t < 1 / 6) return p + (q - p) * 6 * t;
+        if (t < 1 / 2) return q;
+        if (t < 2 / 3) return p + (q - p) * (2 / 3 - t) * 6;
+        return p;
+      };
+      const q = l < 0.5 ? l * (1 + s) : l + s - l * s;
+      const p = 2 * l - q;
+      const r = hue2rgb(p, q, h + 1 / 3);
+      const g = hue2rgb(p, q, h);
+      const b = hue2rgb(p, q, h - 1 / 3);
+      return [Math.round(r * 255), Math.round(g * 255), Math.round(b * 255)];
+    }
+
+    updateLamp();
+  </script>
+</body>
+</html>
